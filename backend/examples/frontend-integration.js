@@ -1,5 +1,5 @@
 // Frontend Integration Examples for GovAid-AI Backend
-// This file shows how to integrate the React frontend with the backend API
+// This file shows how to integrate the React frontend with the backend API for government aid policy analysis
 
 const API_BASE_URL = 'http://localhost:3001/api';
 
@@ -34,7 +34,7 @@ class GovAidAPI {
     }
   }
 
-  // Extract text from URL
+  // Extract text from government aid policy URL
   async extractText(url) {
     return this.makeRequest('/extract-text', {
       method: 'POST',
@@ -42,7 +42,7 @@ class GovAidAPI {
     });
   }
 
-  // Generate summary from text
+  // Generate summary from government aid policy text
   async summarize(text) {
     return this.makeRequest('/summarize', {
       method: 'POST',
@@ -50,7 +50,7 @@ class GovAidAPI {
     });
   }
 
-  // Generate eligibility checklist
+  // Generate eligibility checklist from government aid policy
   async generateChecklist(text) {
     return this.makeRequest('/checklist', {
       method: 'POST',
@@ -58,7 +58,7 @@ class GovAidAPI {
     });
   }
 
-  // Complete URL analysis
+  // Complete government aid policy URL analysis
   async analyzeUrl(url) {
     return this.makeRequest('/analyze-url', {
       method: 'POST',
@@ -66,7 +66,7 @@ class GovAidAPI {
     });
   }
 
-  // Ask a question about a policy
+  // Ask a question about a government aid policy
   async askQuestion(policyText, question) {
     return this.makeRequest('/ask-question', {
       method: 'POST',
@@ -177,7 +177,7 @@ const ExampleComponent = () => {
 
 // Example usage with fetch directly
 const exampleUsage = async () => {
-  // 1. Analyze a government policy URL
+  // 1. Analyze a government aid policy URL
   try {
     const analysisResponse = await fetch(`${API_BASE_URL}/analyze-url`, {
       method: 'POST',
@@ -188,20 +188,20 @@ const exampleUsage = async () => {
     });
     
     const analysis = await analysisResponse.json();
-    console.log('Policy Analysis:', analysis.data);
+    console.log('Government Aid Policy Analysis:', analysis.data);
     
-    // 2. Ask a question about the policy
+    // 2. Ask a question about the government aid policy
     const questionResponse = await fetch(`${API_BASE_URL}/ask-question`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         policyText: analysis.data.rawText,
-        question: 'What is the minimum age to start receiving benefits?'
+        question: 'What is the minimum age to start receiving government benefits?'
       })
     });
     
     const answer = await questionResponse.json();
-    console.log('Question Answer:', answer.data);
+    console.log('Government Aid Policy Question Answer:', answer.data);
     
   } catch (error) {
     console.error('Error:', error);

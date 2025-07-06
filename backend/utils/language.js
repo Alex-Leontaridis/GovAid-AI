@@ -38,7 +38,7 @@ Translation:`;
   const response = await openai.chat.completions.create({
     model: config.openrouter.model,
     messages: [
-      { role: 'system', content: 'You are a professional translator.' },
+      { role: 'system', content: 'You are a professional translator. Use ** ** for bold text and bullet lists in markdown format to preserve formatting in the translated text.' },
       { role: 'user', content: prompt }
     ],
     max_tokens: config.openrouter.maxTokens,

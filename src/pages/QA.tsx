@@ -165,24 +165,24 @@ const QA = () => {
             {qaHistory.length === 0 ? (
               <div className="text-center py-12">
                 <MessageSquare className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Ready to help you understand this policy!</h3>
-                <p className="text-gray-600 mb-6">Ask me anything about the policy document. I can help you understand eligibility requirements, application processes, and more.</p>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Ready to help you understand this government aid policy!</h3>
+                <p className="text-gray-600 mb-6">Ask me anything about the government aid policy document. I can help you understand eligibility requirements, application processes, and more.</p>
                 
                 {/* Example Questions */}
                 <div className="max-w-2xl mx-auto">
-                  <h4 className="text-sm font-medium text-gray-700 mb-3">💡 Example questions you can ask:</h4>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">💡 Example questions about government aid policies:</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
                     <div className="bg-gray-50 p-3 rounded-lg text-gray-600">
-                      "What are the eligibility requirements?"
+                      "What are the eligibility requirements for this government aid?"
                     </div>
                     <div className="bg-gray-50 p-3 rounded-lg text-gray-600">
-                      "How do I apply for this benefit?"
+                      "How do I apply for this government benefit?"
                     </div>
                     <div className="bg-gray-50 p-3 rounded-lg text-gray-600">
-                      "What documents do I need?"
+                      "What documents do I need for this government assistance?"
                     </div>
                     <div className="bg-gray-50 p-3 rounded-lg text-gray-600">
-                      "What is the application deadline?"
+                      "What is the application deadline for this government aid?"
                     </div>
                   </div>
                 </div>

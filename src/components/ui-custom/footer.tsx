@@ -29,6 +29,10 @@ export const Footer = () => {
       label: "Home"
     },
     {
+      href: "/#how-it-works",
+      label: "Features"
+    },
+    {
       href: "/analyze",
       label: "Analyze"
     },
@@ -59,7 +63,7 @@ export const Footer = () => {
 
   const copyright = {
     text: "© 2025 GovAid AI. All rights reserved.",
-    license: "Empowering government document analysis with AI"
+    license: "Empowering government document analysis with AI • Developed in Greece by Alex Leontaridis"
   }
 
   return (

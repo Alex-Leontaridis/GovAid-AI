@@ -19,17 +19,18 @@ const openai = new OpenAI({
 export async function generateSummary(policyText) {
   try {
     console.log(`📝 Generating summary for text (${policyText.length} characters)`);
+    console.log(`🤖 Using model: ${config.openrouter.model}`);
     
     const completion = await openai.chat.completions.create({
       model: config.openrouter.model,
       messages: [
         {
           role: 'system',
-          content: 'You are a helpful assistant that summarizes government policies in plain English. Focus on key points, benefits, and important details that citizens need to know.'
+          content: 'You are a helpful assistant that summarizes government aid policies in plain English. Focus on key points, benefits, eligibility requirements, and important details that citizens need to know about government assistance programs. Use ** ** for bold text and bullet lists in markdown format. Add line breaks between paragraphs and sections to improve readability.'
         },
         {
           role: 'user',
-          content: `Please summarize the following government policy text in a clear and easy-to-understand way:\n\n${policyText}`
+          content: `Please summarize the following government aid policy text in a clear and easy-to-understand way. Use proper formatting with line breaks between paragraphs and sections. Use ** for bold text and bullet points (• or -) for lists. Make sure each bullet point is on its own line:\n\n${policyText}`
         }
       ],
       max_tokens: config.openrouter.maxTokens,
@@ -42,6 +43,29 @@ export async function generateSummary(policyText) {
     return summary;
   } catch (error) {
     console.error('Error generating summary:', error);
+    try {
+      console.error('Error (JSON):', JSON.stringify(error, null, 2));
+    } catch (e) {
+      console.error('Error could not be stringified:', e);
+    }
+    console.error('Error (toString):', error.toString());
+    if (error.stack) {
+      console.error('Error stack:', error.stack);
+    }
+    // Log all error properties
+    for (const key in error) {
+      if (Object.prototype.hasOwnProperty.call(error, key)) {
+        console.error(`Error property [${key}]:`, error[key]);
+      }
+    }
+    if (error.response) {
+      try {
+        const errorText = await error.response.text?.();
+        console.error('OpenAI error response:', errorText);
+      } catch (e) {
+        console.error('Failed to read error response:', e);
+      }
+    }
     throw new Error('Failed to generate summary. Please try again.');
   }
 }
@@ -60,11 +84,11 @@ export async function generateEligibilityChecklist(policyText) {
       messages: [
         {
           role: 'system',
-          content: 'You are a helpful assistant that creates eligibility checklists for government policies. Extract all eligibility requirements and criteria from the policy text.'
+          content: 'You are a helpful assistant that creates concise eligibility checklists for government aid policies. Extract ONLY the essential eligibility requirements (what someone needs to qualify). Do NOT include information about benefits, how to apply, how to check balance, or how to report fraud. Format as simple bullet points (• or -) with ** for key terms. Keep each item very brief. Return ONLY the bulleted eligibility requirements - no explanations, no titles, no extra formatting.'
         },
         {
           role: 'user',
-          content: `Please create a checklist of eligibility requirements from the following government policy text. Return only the requirements as a numbered list:\n\n${policyText}`
+          content: `Please create a concise checklist of ONLY the eligibility requirements from the following government aid policy text. Return ONLY the requirements as bullet points (use • or - for bullets), with ** for emphasis on key terms. Focus ONLY on what someone needs to qualify - do NOT include benefits, application process, or other information. Keep each item very brief:\n\n${policyText}`
         }
       ],
       max_tokens: config.openrouter.maxTokens,
@@ -79,8 +103,8 @@ export async function generateEligibilityChecklist(policyText) {
       .map(line => line.trim())
       .filter(line => line.length > 0)
       .map(line => {
-        // Remove numbering (1., 2., etc.) and bullet points
-        return line.replace(/^\d+\.\s*/, '').replace(/^[-*]\s*/, '');
+        // Remove numbering (1., 2., etc.) and bullet points, but keep the content
+        return line.replace(/^\d+\.\s*/, '').replace(/^[-*•]\s*/, '');
       });
 
     console.log(`✅ Generated checklist with ${checklist.length} items`);
@@ -107,16 +131,17 @@ export async function answerQuestion(policyText, question) {
       messages: [
         {
           role: 'system',
-          content: `You are GovAid AI, a helpful and knowledgeable assistant that specializes in government policies and benefits. You have access to the following policy document and can answer questions about it in a conversational, helpful manner.
+          content: `You are GovAid AI, a helpful and knowledgeable assistant that specializes in government aid policies and benefits. You have access to the following government aid policy document and can answer questions about it in a conversational, helpful manner.
 
 Your role is to:
-- Answer questions about government policies clearly and accurately
-- Provide helpful, actionable information
+- Answer questions about government aid policies clearly and accurately
+- Provide helpful, actionable information about government assistance programs
 - Be conversational and friendly, like ChatGPT
 - If information is not in the provided context, say so clearly
 - Always be helpful and supportive
+- Use ** ** for bold text and bullet lists in markdown format to make your answers more readable and structured
 
-Policy Document:
+Government Aid Policy Document:
 ${policyText}`
         },
         {

@@ -13,7 +13,7 @@ const config = {
   openrouter: {
     apiKey: process.env.OPENROUTER_API_KEY,
     baseURL: process.env.OPENROUTER_BASE_URL || 'https://openrouter.ai/api/v1/',
-    model: process.env.OPENROUTER_MODEL || 'qwen/qwen3-30b-a3b:free',
+    model: process.env.OPENROUTER_MODEL || 'openai/gpt-3.5-turbo',
     maxTokens: 2000,
     temperature: 0.3,
   },

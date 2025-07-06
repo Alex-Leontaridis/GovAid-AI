@@ -85,6 +85,24 @@ const Navbar1 = () => {
               History
             </Link>
           </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
+            whileHover={{ scale: 1.05 }}
+          >
+            <Link 
+              to="/#how-it-works" 
+              className={`text-sm font-medium transition-colors ${
+                isActive('/#how-it-works') 
+                  ? 'text-primary' 
+                  : 'text-gray-900 hover:text-gray-600'
+              }`}
+            >
+              Features
+            </Link>
+          </motion.div>
         </nav>
 
         {/* Desktop CTA Button */}
@@ -92,7 +110,7 @@ const Navbar1 = () => {
           className="hidden md:block"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.3, delay: 0.2 }}
+          transition={{ duration: 0.3, delay: 0.25 }}
           whileHover={{ scale: 1.05 }}
         >
           <Link
@@ -184,6 +202,25 @@ const Navbar1 = () => {
                   onClick={toggleMenu}
                 >
                   History
+                </Link>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 }}
+                exit={{ opacity: 0, x: 20 }}
+              >
+                <Link 
+                  to="/#how-it-works" 
+                  className={`text-base font-medium ${
+                    isActive('/#how-it-works') 
+                      ? 'text-primary' 
+                      : 'text-gray-900'
+                  }`}
+                  onClick={toggleMenu}
+                >
+                  Features
                 </Link>
               </motion.div>
 

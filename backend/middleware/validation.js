@@ -24,9 +24,9 @@ const schemas = {
 
   askQuestion: Joi.object({
     policyText: Joi.string().min(1).required().messages({
-      'string.min': 'Policy text must be at least 1 character long',
-      'any.required': 'Policy text is required',
-      'string.empty': 'Policy text cannot be empty'
+      'string.min': 'Government aid policy text must be at least 1 character long',
+      'any.required': 'Government aid policy text is required',
+      'string.empty': 'Government aid policy text cannot be empty'
     }),
     question: Joi.string().min(1).required().messages({
       'string.min': 'Question must be at least 1 character long',

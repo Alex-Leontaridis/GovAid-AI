@@ -1,19 +1,33 @@
+![GovAidAI Banner](public/assets/github_banner.png)
+
 # GovAid AI
 
-AI-powered platform to help users understand government policies with plain-language summaries and intelligent Q&A.
+---
+
+**This project is a submission for Sonoma Hacks 4.0 (24 Hours Hackathon).**
+
+## Problem Statement
+Navigating government aid programs is often confusing, with complex policy documents, eligibility requirements, and legal jargon. Many individuals and organizations struggle to understand what aid is available, how to qualify, and what steps to take, leading to missed opportunities and frustration.
+
+## Solution
+GovAid AI is an AI-powered platform designed to make government aid policies accessible and understandable. Users can upload policy documents or provide URLs, and the platform generates plain-language summaries, answers questions, and creates actionable checklists. By leveraging advanced AI and a user-friendly interface, GovAid AI empowers users to make informed decisions and access the support they need.
+
+---
+
+AI-powered platform to help users understand government aid policies with plain-language summaries and intelligent Q&A.
 
 ## Features
 
-- **Policy Analysis**: Upload PDF/DOCX files or paste policy URLs for AI-powered analysis
-- **Plain Language Summaries**: Get easy-to-understand summaries of complex government documents
-- **Interactive Q&A**: Ask questions about policies and get intelligent responses
-- **Checklist Generation**: Automatically generate actionable checklists from policy documents
+- **Government Aid Policy Analysis**: Upload PDF/DOCX files or paste government aid policy URLs for AI-powered analysis
+- **Plain Language Summaries**: Get easy-to-understand summaries of complex government aid policy documents
+- **Interactive Q&A**: Ask questions about government aid policies and get intelligent responses
+- **Checklist Generation**: Automatically generate actionable eligibility checklists from government aid policy documents
 
 ## Tech Stack
 
 - **Frontend**: React 18, TypeScript, Vite
 - **UI Components**: Radix UI, Tailwind CSS, shadcn/ui
-- **AI Integration**: OpenAI API, LangChain
+- **AI Integration**: OpenRouter API (Claude 3 Haiku)
 - **Routing**: React Router DOM
 - **State Management**: TanStack Query
 - **Forms**: React Hook Form with Zod validation
@@ -71,18 +85,6 @@ src/
 └── App.tsx             # Main application component
 ```
 
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Support
-
-For support, email support@govaid.ai or create an issue in this repository.
