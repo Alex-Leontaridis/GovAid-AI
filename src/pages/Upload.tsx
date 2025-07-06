@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,7 +11,9 @@ import { apiService } from "@/lib/api";
 import { AnalysisStorage } from "@/lib/storageUtils";
 import { Navbar1 } from "@/components/ui/navbar-1";
 import { PageTransition, StaggerContainer, StaggerItem } from "@/components/ui/page-transition";
+import { ExamplePolicies } from "@/components/ui/example-policies";
 import { motion } from "motion/react";
+import { PolicyBadges } from "@/components/ui/policy-badges";
 
 // Progress indicator component
 const ProgressIndicator = ({ currentStep, isProcessing }: { currentStep: number; isProcessing: boolean }) => {
@@ -71,9 +73,18 @@ const Upload = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+  const [autoAnalyze, setAutoAnalyze] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
   const { dispatch } = useAnalysis();
+
+  useEffect(() => {
+    if (autoAnalyze && url) {
+      handleAnalyze();
+      setAutoAnalyze(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoAnalyze, url]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -93,6 +104,15 @@ const Upload = () => {
         });
       }
     }
+  };
+
+  const handlePolicySelect = (policyUrl: string) => {
+    setUrl(policyUrl);
+    setFile(null); // Clear any selected file
+    toast({
+      title: "Policy selected",
+      description: "The policy URL has been added to the input field.",
+    });
   };
 
   const handleAnalyze = async () => {
@@ -347,6 +367,11 @@ const Upload = () => {
                           <p className="text-sm text-gray-500">
                             Enter a government aid policy URL (e.g., https://www.ssa.gov/benefits, https://www.irs.gov/credits, https://www.benefits.gov)
                           </p>
+                          <PolicyBadges onSelect={(policyUrl) => {
+                            setUrl(policyUrl);
+                            setFile(null);
+                            setAutoAnalyze(true);
+                          }} />
                         </div>
                       </StaggerItem>
 
@@ -472,6 +497,9 @@ const Upload = () => {
                   </CardContent>
                 </Card>
               </motion.div>
+
+              {/* Example Policies */}
+              <ExamplePolicies onPolicySelect={handlePolicySelect} />
             </div>
           </div>
         </div>
