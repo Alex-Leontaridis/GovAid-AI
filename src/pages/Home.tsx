@@ -6,6 +6,8 @@ import { Navbar1 } from "@/components/ui/navbar-1";
 import { HeroSection } from "@/components/hero-section";
 import { Logos3 } from "@/components/logos3";
 import { Feature } from "@/components/ui/feature";
+import { ProblemSolutionExample } from "@/components/ui/problem-solution-example";
+import { Cta4 } from "@/components/cta-4";
 import { PageTransition, StaggerContainer, StaggerItem } from "@/components/ui/page-transition";
 import { motion } from "motion/react";
 
@@ -26,7 +28,7 @@ const Home = () => {
             }
           }}
           title={<>Understand Government Aid Policies.<br />Instantly With AI</>}
-          description="GovAid AI uses powerful AI to simplify complex government aid policies into plain English. Get summaries, checklists, and answers about benefits, assistance programs, and eligibility — without the bureaucracy."
+          description="We guide users through discovering and applying for government benefits, breaking down complex requirements to ensure no one is left behind."
           actions={[
             {
               text: "Get Started",
@@ -44,6 +46,9 @@ const Home = () => {
 
         {/* Government Platforms Logos */}
         <Logos3 />
+
+        {/* Problem VS Solution Section */}
+        <ProblemSolutionExample />
 
         {/* Feature Showcase Section */}
         <motion.div 
@@ -135,7 +140,7 @@ const Home = () => {
           </div>
         </motion.div>
 
-        {/* Why GovAid AI */}
+        {/* Watch Our Demo */}
         <motion.section 
           className="py-16"
           initial={{ opacity: 0 }}
@@ -152,80 +157,52 @@ const Home = () => {
               transition={{ duration: 0.6 }}
             >
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Why GovAid AI?
+                Watch Our Demo
               </h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                See how GovAid AI transforms complex government policies into clear, actionable information in just minutes.
+              </p>
             </motion.div>
 
-            <div className="max-w-3xl mx-auto">
-              <StaggerContainer className="space-y-6">
-                {[
-                  "Cuts through government jargon",
-                  "Saves time and confusion", 
-                  "Built with OpenRouter + OpenAI API"
-                ].map((benefit, index) => (
-                  <StaggerItem key={index}>
-                    <motion.div 
-                      className="flex items-center gap-4 p-6 bg-gray-50 rounded-lg"
-                      whileHover={{ 
-                        scale: 1.02,
-                        backgroundColor: "#f8fafc",
-                        transition: { duration: 0.2 }
-                      }}
-                    >
-                      <motion.div
-                        initial={{ scale: 0 }}
-                        whileInView={{ scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ 
-                          duration: 0.3, 
-                          delay: index * 0.1,
-                          type: "spring",
-                          stiffness: 200
-                        }}
-                      >
-                        <CheckCircle className="h-6 w-6 text-primary flex-shrink-0" />
-                      </motion.div>
-                      <span className="text-lg text-gray-700">{benefit}</span>
-                    </motion.div>
-                  </StaggerItem>
-                ))}
-              </StaggerContainer>
+            <div className="max-w-4xl mx-auto">
+              <motion.div 
+                className="relative aspect-video rounded-lg overflow-hidden shadow-2xl"
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                whileHover={{ 
+                  scale: 1.02,
+                  transition: { duration: 0.2 }
+                }}
+              >
+                <iframe
+                  src="https://www.youtube.com/embed/zaxJZg9ihHQ"
+                  title="GovAid AI Demo"
+                  className="w-full h-full"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                ></iframe>
+              </motion.div>
             </div>
           </div>
         </motion.section>
 
         {/* CTA Section */}
-        <motion.section 
-          className="py-16 bg-primary"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div 
-              className="text-center"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <h2 className="text-3xl font-bold text-white mb-6">
-                Ready to get started?
-              </h2>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Button asChild size="lg" className="bg-white text-primary hover:bg-gray-100 px-8 py-3 text-lg">
-                  <Link to="/upload">
-                    Analyze Your First Aid Policy
-                  </Link>
-                </Button>
-              </motion.div>
-            </motion.div>
-          </div>
-        </motion.section>
+        <Cta4
+          title="Ready to transform government policies into clear insights?"
+          description="We guide users through discovering and applying for government benefits, breaking down complex requirements to ensure no one is left behind."
+          buttonText="Start Analyzing Now"
+          buttonUrl="/upload"
+          items={[
+            "AI-Powered Analysis",
+            "Plain English Summaries",
+            "Eligibility Checklists",
+            "Interactive Q&A",
+            "Multi-format Support"
+          ]}
+        />
       </div>
     </PageTransition>
   );
