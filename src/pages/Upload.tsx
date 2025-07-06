@@ -9,6 +9,7 @@ import { Upload as UploadIcon, FileText, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAnalysis } from "@/contexts/AnalysisContext";
 import { apiService } from "@/lib/api";
+import { AnalysisStorage } from "@/lib/storageUtils";
 import { Navbar1 } from "@/components/ui/navbar-1";
 
 const Upload = () => {
@@ -150,9 +151,23 @@ const Upload = () => {
       dispatch({ type: 'SET_ANALYZING', payload: false });
       dispatch({ type: 'SET_LOADING', payload: false });
 
+      // Auto-save the analysis
+      try {
+        const savedAnalysis = AnalysisStorage.saveAnalysis(
+          analysisResult,
+          documentTitle || 'Untitled Analysis',
+          url || undefined,
+          file?.name
+        );
+        dispatch({ type: 'ADD_SAVED_ANALYSIS', payload: savedAnalysis });
+      } catch (error) {
+        console.error('Error auto-saving analysis:', error);
+        // Don't show error toast for auto-save failures
+      }
+
       toast({
         title: "Analysis complete",
-        description: "Your document has been analyzed successfully!",
+        description: "Your document has been analyzed and saved successfully!",
       });
 
       navigate('/analyze');

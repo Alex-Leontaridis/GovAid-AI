@@ -14,6 +14,33 @@ export interface AnalysisResult {
   };
 }
 
+// New types for saved analysis and history
+export interface SavedAnalysis {
+  id: string;
+  title: string;
+  documentTitle: string;
+  documentUrl?: string;
+  documentFile?: string; // filename
+  analysisResult: AnalysisResult;
+  createdAt: string;
+  updatedAt: string;
+  shareId?: string; // for public sharing
+}
+
+export interface AnalysisHistory {
+  analyses: SavedAnalysis[];
+  totalCount: number;
+}
+
+export interface ShareableAnalysis {
+  id: string;
+  title: string;
+  documentTitle: string;
+  analysisResult: AnalysisResult;
+  createdAt: string;
+  isPublic: boolean;
+}
+
 export interface QAResult {
   question: string;
   answer: string;

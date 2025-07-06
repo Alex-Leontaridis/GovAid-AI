@@ -9,6 +9,8 @@ import Index from "./pages/Index";
 import Upload from "./pages/Upload";
 import Analyze from "./pages/Analyze";
 import QA from "./pages/QA";
+import History from "./pages/History";
+import View from "./pages/View";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +29,8 @@ const App = () => (
                 <Route path="/upload" element={<Upload />} />
                 <Route path="/analyze" element={<Analyze />} />
                 <Route path="/qa" element={<QA />} />
+                <Route path="/history" element={<History />} />
+                <Route path="/view/:shareId" element={<View />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>

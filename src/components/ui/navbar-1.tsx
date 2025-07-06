@@ -67,6 +67,24 @@ const Navbar1 = () => {
               Upload
             </Link>
           </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.15 }}
+            whileHover={{ scale: 1.05 }}
+          >
+            <Link 
+              to="/history" 
+              className={`text-sm font-medium transition-colors ${
+                isActive('/history') 
+                  ? 'text-primary' 
+                  : 'text-gray-900 hover:text-gray-600'
+              }`}
+            >
+              History
+            </Link>
+          </motion.div>
         </nav>
 
         {/* Desktop CTA Button */}
@@ -147,6 +165,25 @@ const Navbar1 = () => {
                   onClick={toggleMenu}
                 >
                   Upload
+                </Link>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.25 }}
+                exit={{ opacity: 0, x: 20 }}
+              >
+                <Link 
+                  to="/history" 
+                  className={`text-base font-medium ${
+                    isActive('/history') 
+                      ? 'text-primary' 
+                      : 'text-gray-900'
+                  }`}
+                  onClick={toggleMenu}
+                >
+                  History
                 </Link>
               </motion.div>
 

@@ -5,6 +5,7 @@ import { FileText, MessageSquare, CheckCircle, ArrowRight } from "lucide-react";
 import { Navbar1 } from "@/components/ui/navbar-1";
 import { HeroSection } from "@/components/hero-section";
 import { Logos3 } from "@/components/logos3";
+import { Feature } from "@/components/ui/feature";
 
 const Home = () => {
   return (
@@ -41,46 +42,73 @@ const Home = () => {
       {/* Government Platforms Logos */}
       <Logos3 />
 
-      {/* How It Works */}
-      <section id="how-it-works" className="py-16 bg-gray-50">
+      {/* Feature Showcase Section */}
+      <div className="py-16 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              How It Works
+              Analyzing Policies from America's Most Trusted Agencies
             </h2>
           </div>
-
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {[
-              {
-                icon: FileText,
-                title: "Upload or Paste",
-                description: "Paste a policy URL or upload a PDF/DOCX file"
-              },
-              {
-                icon: CheckCircle,
-                title: "Get Summary",
-                description: "Get a plain-language summary and checklist"
-              },
-              {
-                icon: MessageSquare,
-                title: "Ask Questions",
-                description: "Ask the AI questions about the policy"
-              }
-            ].map((step, index) => (
-              <Card key={index} className="text-center border-gray-200">
-                <CardContent className="pt-8 pb-6">
-                  <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                    <step.icon className="h-8 w-8 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3 text-gray-900">{step.title}</h3>
-                  <p className="text-gray-600">{step.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
         </div>
-      </section>
+        <Feature
+          title="Document Upload & Processing"
+          badge="Step 1"
+          description="Easily upload or paste government policy documents for instant analysis."
+          features={[
+            {
+              title: "Multi-format Support",
+              description: "Upload PDF, DOCX, or DOC files, or paste a policy URL."
+            },
+            {
+              title: "URL Validation",
+              description: "Smart validation and normalization of policy URLs."
+            },
+            {
+              title: "Progress Tracking",
+              description: "Get real-time feedback during document processing."
+            }
+          ]}
+        />
+        <Feature
+          title="AI-Powered Policy Analysis"
+          badge="Step 2"
+          description="Let AI break down complex policies into plain English summaries and actionable checklists."
+          features={[
+            {
+              title: "Summary Generation",
+              description: "Get concise, plain-language summaries of policy documents."
+            },
+            {
+              title: "Requirement Extraction",
+              description: "Automatically extract and list eligibility criteria."
+            },
+            {
+              title: "Document Statistics",
+              description: "See document length, summary size, and requirements count."
+            }
+          ]}
+        />
+        <Feature
+          title="Interactive Q&A System"
+          badge="Step 3"
+          description="Ask questions and get instant, context-aware answers about any policy."
+          features={[
+            {
+              title: "Context-Aware Responses",
+              description: "AI answers based on the specific uploaded policy."
+            },
+            {
+              title: "Example Questions",
+              description: "Get suggestions for common policy-related questions."
+            },
+            {
+              title: "Response Formatting",
+              description: "Beautifully formatted answers with markdown support."
+            }
+          ]}
+        />
+      </div>
 
       {/* Why GovAid AI */}
       <section className="py-16">
