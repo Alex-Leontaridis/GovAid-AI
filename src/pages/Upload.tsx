@@ -1,17 +1,23 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Upload as UploadIcon, FileText } from "lucide-react";
+import { Upload as UploadIcon, FileText, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAnalysis } from "@/contexts/AnalysisContext";
+import { apiService } from "@/lib/api";
+import { Navbar1 } from "@/components/ui/navbar-1";
 
 const Upload = () => {
   const [url, setUrl] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const { dispatch } = useAnalysis();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -33,8 +39,163 @@ const Upload = () => {
     }
   };
 
+  const handleAnalyze = async () => {
+    if (!url.trim() && !file) {
+      toast({
+        title: "No input provided",
+        description: "Please provide a URL or upload a file.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate and normalize URL if provided
+    let normalizedUrl = url.trim();
+    if (normalizedUrl) {
+      try {
+        // Add protocol if missing
+        if (!normalizedUrl.startsWith('http://') && !normalizedUrl.startsWith('https://')) {
+          normalizedUrl = 'https://' + normalizedUrl;
+        }
+        
+        // Validate the URL
+        new URL(normalizedUrl);
+        
+        // Update the URL state with the normalized version
+        setUrl(normalizedUrl);
+      } catch {
+        toast({
+          title: "Invalid URL",
+          description: "Please provide a valid URL starting with http:// or https://",
+          variant: "destructive",
+        });
+        return;
+      }
+    }
+
+    setIsProcessing(true);
+    dispatch({ type: 'SET_LOADING', payload: true });
+    dispatch({ type: 'SET_ERROR', payload: null });
+
+    try {
+      let documentText = '';
+      let documentTitle = '';
+
+      if (normalizedUrl) {
+        // Process URL
+        console.log('Processing URL:', normalizedUrl);
+        dispatch({ type: 'SET_DOCUMENT_URL', payload: normalizedUrl });
+        
+        toast({
+          title: "Processing URL",
+          description: "Extracting content from the provided URL...",
+        });
+
+        const urlResult = await apiService.extractTextFromUrl(normalizedUrl);
+        documentText = urlResult.text;
+        documentTitle = urlResult.title;
+        
+        console.log('Setting document text from URL:', {
+          textLength: documentText.length,
+          title: documentTitle,
+          textPreview: documentText.substring(0, 100) + '...'
+        });
+        dispatch({ type: 'SET_DOCUMENT_TEXT', payload: documentText });
+        dispatch({ type: 'SET_DOCUMENT_TITLE', payload: documentTitle });
+      } else if (file) {
+        // Process file
+        dispatch({ type: 'SET_DOCUMENT_FILE', payload: file });
+        
+        toast({
+          title: "Processing file",
+          description: `Extracting text from ${file.name}...`,
+        });
+
+        const fileResult = await apiService.uploadFile(file);
+        documentText = fileResult.text;
+        documentTitle = file.name;
+        
+        console.log('Setting document text from file:', {
+          textLength: documentText.length,
+          title: documentTitle,
+          textPreview: documentText.substring(0, 100) + '...'
+        });
+        dispatch({ type: 'SET_DOCUMENT_TEXT', payload: documentText });
+        dispatch({ type: 'SET_DOCUMENT_TITLE', payload: documentTitle });
+      }
+
+      // Generate analysis
+      toast({
+        title: "Analyzing document",
+        description: "Generating summary and checklist...",
+      });
+
+      dispatch({ type: 'SET_ANALYZING', payload: true });
+
+      const summaryResult = await apiService.generateSummary(documentText);
+      const checklistResult = await apiService.generateChecklist(documentText);
+
+      const analysisResult = {
+        summary: summaryResult.summary,
+        checklist: checklistResult.checklist,
+        rawText: documentText,
+        metadata: {
+          textLength: documentText.length,
+          summaryLength: summaryResult.summary.length,
+          checklistCount: checklistResult.checklist.length,
+        },
+      };
+
+      dispatch({ type: 'SET_ANALYSIS_RESULT', payload: analysisResult });
+      dispatch({ type: 'SET_ANALYZING', payload: false });
+      dispatch({ type: 'SET_LOADING', payload: false });
+
+      toast({
+        title: "Analysis complete",
+        description: "Your document has been analyzed successfully!",
+      });
+
+      navigate('/analyze');
+    } catch (error) {
+      console.error('Analysis failed:', error);
+      
+      // Create a user-friendly error message
+      let errorMessage = 'Analysis failed. Please try again.';
+      
+      if (error instanceof Error) {
+        if (error.message.includes('HTTP 404')) {
+          errorMessage = 'The URL you provided could not be found. Please check the URL and try again.';
+        } else if (error.message.includes('Invalid URL') || error.message.includes('valid URL')) {
+          errorMessage = 'Please provide a valid URL starting with http:// or https://';
+        } else if (error.message.includes('timeout')) {
+          errorMessage = 'The website took too long to respond. Please try again or use a different URL.';
+        } else if (error.message.includes('ENOTFOUND')) {
+          errorMessage = 'Could not reach the website. Please check your internet connection and try again.';
+        } else if (error.message.includes('Validation failed')) {
+          errorMessage = 'Please provide a valid URL starting with http:// or https://';
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
+      dispatch({ type: 'SET_ERROR', payload: errorMessage });
+      dispatch({ type: 'SET_LOADING', payload: false });
+      dispatch({ type: 'SET_ANALYZING', payload: false });
+      
+      toast({
+        title: "Analysis failed",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-gray-50">
+      <Navbar1 />
+      <div className="py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto">
           {/* Header */}
@@ -69,6 +230,9 @@ const Upload = () => {
                   onChange={(e) => setUrl(e.target.value)}
                   className="h-12 text-base"
                 />
+                <p className="text-sm text-gray-500">
+                  Enter a government policy URL (e.g., https://www.gov.uk/benefits, https://www.irs.gov/credits)
+                </p>
               </div>
 
               {/* Divider */}
@@ -120,28 +284,33 @@ const Upload = () => {
               {/* Action Buttons */}
               <div className="space-y-4 pt-4">
                 <Button 
-                  asChild 
+                  onClick={handleAnalyze}
                   className="w-full h-12 text-base bg-primary hover:bg-primary/90"
-                  disabled={!url.trim() && !file}
+                  disabled={(!url.trim() && !file) || isProcessing}
                 >
-                  <Link to="/analyze">
-                    Analyze
-                  </Link>
+                  {isProcessing ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    'Analyze'
+                  )}
                 </Button>
                 
                 <Button 
                   variant="outline" 
-                  asChild 
+                  onClick={() => navigate('/')}
                   className="w-full h-12 text-base"
+                  disabled={isProcessing}
                 >
-                  <Link to="/">
-                    Back to Home
-                  </Link>
+                  Back to Home
                 </Button>
               </div>
             </CardContent>
           </Card>
         </div>
+      </div>
       </div>
     </div>
   );
