@@ -1,8 +1,5 @@
-
-
-const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://gov-aid-jtzfh76m5-alex-leontaridis-projects.vercel.app/api' 
-  : 'http://localhost:3001/api';
+// For Vercel deployment, always use the production backend
+const API_BASE_URL = 'https://gov-aid-jtzfh76m5-alex-leontaridis-projects.vercel.app/api';
 
 // Types for API responses
 export interface AnalysisResult {
@@ -75,8 +72,6 @@ export interface ApiResponse<T> {
 
 // API service class
 class ApiService {
-  private mockService = new MockApiService();
-
   private async request<T>(
     endpoint: string,
     options: RequestInit = {}
