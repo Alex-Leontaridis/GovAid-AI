@@ -11,7 +11,7 @@ import { apiService } from "@/lib/api";
 import { AnalysisStorage } from "@/lib/storageUtils";
 import { Navbar1 } from "@/components/ui/navbar-1";
 import { PageTransition, StaggerContainer, StaggerItem } from "@/components/ui/page-transition";
-import { ExamplePolicies } from "@/components/ui/example-policies";
+
 import { motion } from "motion/react";
 import { PolicyBadges } from "@/components/ui/policy-badges";
 
@@ -364,8 +364,9 @@ const Upload = () => {
                               className="h-12 text-base"
                             />
                           </motion.div>
-                          <p className="text-sm text-gray-500">
-                            Enter a government aid policy URL (e.g., https://www.ssa.gov/benefits, https://www.irs.gov/credits, https://www.benefits.gov)
+
+                          <p className="text-xs text-gray-400">
+                            Here are some examples you can use (Policies are randomly selected each time. Refresh to see different examples.)
                           </p>
                           <PolicyBadges onSelect={(policyUrl) => {
                             setUrl(policyUrl);
@@ -498,8 +499,7 @@ const Upload = () => {
                 </Card>
               </motion.div>
 
-              {/* Example Policies */}
-              <ExamplePolicies onPolicySelect={handlePolicySelect} />
+
             </div>
           </div>
         </div>
